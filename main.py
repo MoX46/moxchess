@@ -2,6 +2,7 @@
 from enum import Enum
 import re
 
+DEBUG = True
 STARTING_FEN_STRING = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1'
 RANKS = [1,2,3,4,5,6,7,8]
 FILES = ['A','B','C','D','E','F','G','H']
@@ -40,6 +41,9 @@ class GamePiece():
         self.first_move = True
 
     def __str__(self):
+        if DEBUG:
+            return f'I\'m a {self.color.value} {self.type.value}'
+
         if self.color == Color.WHITE:
             return UNICODE_PIECES[self.type][0]
         if self.color == Color.BLACK:
