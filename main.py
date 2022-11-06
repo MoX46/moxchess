@@ -68,6 +68,8 @@ class GamePiece():
         """Returns a list of all legal moves"""
         return []
 
+#columns = files (ABCDEFGH) , rows = ranks (123456789)
+
 def rank_file_to_grid(square:str) -> tuple[int,int]:
     """ Converts a chess square name to a (row,col) tuple (ex.E4 => (4,3)) """
     return (FILES.index(square[0]),RANKS.index(int(square[1]))) 
