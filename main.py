@@ -1,6 +1,7 @@
 """Main function of moxchess"""
 from enum import Enum
 import re
+import numpy as np
 
 DEBUG = True
 STARTING_FEN_STRING = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1'
@@ -69,14 +70,16 @@ class GamePiece():
         return []
 
 #columns = files (ABCDEFGH) , rows = ranks (123456789)
+# A8 = 00, B8 = 01, C8 = 02...
+# A7 = 10, B7 = 11, C7 = 12...
 
 def rank_file_to_grid(square:str) -> tuple[int,int]:
-    """ Converts a chess square name to a (row,col) tuple (ex.E4 => (4,3)) """
-    return (FILES.index(square[0]),RANKS.index(int(square[1]))) 
+    """ Converts a chess square name to a (row,col) tuple (ex. A8 => (0,0)) """
+    return(abs(int(square[1]) - 8), FILES.index(square[0]))
 
-def grid_to_rank_file(index:tuple[int,int]) -> str:
-    """ Converts (row,col) tuple to a chess square name (ex. (4,3) => E4) """
-    return (FILES[index[0]] + str(RANKS[index[1]]))
+def grid_to_rank_file(grid:tuple[int,int]) -> str:
+    """ Converts (row,col) tuple to a chess square name (ex. (4,3) => D4) """
+    return FILES[grid[0]] + str(8 -nt(grid[1])) 
 
 class Board():
     """The Board class represents a chess board"""
