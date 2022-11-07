@@ -79,7 +79,7 @@ def rank_file_to_grid(square:str) -> tuple[int,int]:
 
 def grid_to_rank_file(grid:tuple[int,int]) -> str:
     """ Converts (row,col) tuple to a chess square name (ex. (4,3) => D4) """
-    return FILES[grid[0]] + str(8 -nt(grid[1])) 
+    return FILES[grid[1]] + str(8 - int(grid[0])) 
 
 class Board():
     """The Board class represents a chess board"""
