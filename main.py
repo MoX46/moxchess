@@ -33,6 +33,18 @@ UNICODE_PIECES = {
     Piece.PAWN: ('♙','♟︎')
 }
 
+#columns = files (ABCDEFGH) , rows = ranks (123456789)
+# A8 = 00, B8 = 01, C8 = 02...
+# A7 = 10, B7 = 11, C7 = 12...
+
+def rank_file_to_grid(square:str) -> tuple[int,int]:
+    """ Converts a chess square name to a (row,col) tuple (ex. A8 => (0,0)) """
+    return(abs(int(square[1]) - 8), FILES.index(square[0]))
+
+def grid_to_rank_file(grid:tuple[int,int]) -> str:
+    """ Converts (row,col) tuple to a chess square name (ex. (4,3) => D4) """
+    return FILES[grid[1]] + str(8 - int(grid[0])) 
+
 class GamePiece():
     """The Piece class represents a chess piece in the game"""
     def __init__(self, position:str, piece_type:Piece = Piece.EMPTY, color:Color = Color.NONE):
@@ -44,7 +56,6 @@ class GamePiece():
     def __str__(self):
         if DEBUG:
             return f'I\'m a {self.color.value} {self.type.value}'
-
         if self.color == Color.WHITE:
             return UNICODE_PIECES[self.type][0]
         if self.color == Color.BLACK:
@@ -68,18 +79,6 @@ class GamePiece():
     def get_legal_moves(self) -> list[str]:
         """Returns a list of all legal moves"""
         return []
-
-#columns = files (ABCDEFGH) , rows = ranks (123456789)
-# A8 = 00, B8 = 01, C8 = 02...
-# A7 = 10, B7 = 11, C7 = 12...
-
-def rank_file_to_grid(square:str) -> tuple[int,int]:
-    """ Converts a chess square name to a (row,col) tuple (ex. A8 => (0,0)) """
-    return(abs(int(square[1]) - 8), FILES.index(square[0]))
-
-def grid_to_rank_file(grid:tuple[int,int]) -> str:
-    """ Converts (row,col) tuple to a chess square name (ex. (4,3) => D4) """
-    return FILES[grid[1]] + str(8 - int(grid[0])) 
 
 class Board():
     """The Board class represents a chess board"""
@@ -154,15 +153,7 @@ def fen_to_game(fen:str):
     print('hello')
 
 def main():
-    white_queen = GamePiece('E4',Piece.QUEEN,Color.WHITE)
-    pos = white_queen.get_position()
-    idx = white_queen.get_index()
-    white_queen.move('C6')
-    new_pos = white_queen.get_position()
-    new_idx = white_queen.get_index()
-    print(f'Origiona position: {pos} | Original index: {idx}')
-    print(f'New position: {new_pos} | New index: {new_idx}')
-    print(white_queen)
+    print('Welcome to MoxChess!')
 
 if __name__ == "__main__":
     main()

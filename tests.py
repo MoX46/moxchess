@@ -1,3 +1,4 @@
+from re import I
 import unittest
 import main as m
 
@@ -37,6 +38,25 @@ class TestGridToRankFile(unittest.TestCase):
         """Test last column, 7"""
         self.assertEqual(m.grid_to_rank_file((5,7)),('H3'))
 
+class TestGamePiece(unittest.TestCase):
+    """Tests the game piece class """
+    def setUp(self) -> None:
+        self.test_piece = m.GamePiece('A4',m.Piece.BISHOP,m.Color.WHITE)
+
+    def test_get_position(self) -> None:
+        """Tests the get position method"""
+        self.assertEqual(self.test_piece.get_position(), 'A4')
+
+    def test_get_index(self) -> None:
+        """Tests the get index method"""
+        self.assertEqual(self.test_piece.get_index(),(4,1))
+
+    def get_legal_moves_bishop(self) -> None:
+        """Tests legal moves for bishop"""
+        test_piece = m.GamePiece('E4',m.Piece.BISHOP,m.Color.WHITE)
+        expected = ['F5','G6','H7','F3','G2','H1','D3','C2','D1','D5','C6','B7','A8']
+        expected.sort()
+        self.assertEqual(test_piece.get_legal_moves(),expected)
 
 if __name__ == '__main__':
     unittest.main()
