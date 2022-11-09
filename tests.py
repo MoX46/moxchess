@@ -1,3 +1,4 @@
+from cgi import test
 from re import I
 import unittest
 import main as m
@@ -49,14 +50,37 @@ class TestGamePiece(unittest.TestCase):
 
     def test_get_index(self) -> None:
         """Tests the get index method"""
-        self.assertEqual(self.test_piece.get_index(),(4,1))
+        self.assertEqual(self.test_piece.get_index(),(4,0))
 
-    def get_legal_moves_bishop(self) -> None:
-        """Tests legal moves for bishop"""
-        test_piece = m.GamePiece('E4',m.Piece.BISHOP,m.Color.WHITE)
-        expected = ['F5','G6','H7','F3','G2','H1','D3','C2','D1','D5','C6','B7','A8']
-        expected.sort()
-        self.assertEqual(test_piece.get_legal_moves(),expected)
+    # def get_legal_moves_bishop(self) -> None:
+    #     """Tests legal moves for bishop"""
+    #     bishop_piece = m.GamePiece('E4',m.Piece.BISHOP,m.Color.WHITE)
+    #     expected = ['F5','G6','H7','F3','G2','H1','D3','C2','D1','D5','C6','B7','A8']
+    #     expected.sort()
+    #     self.assertEqual(bishop_piece.get_legal_moves(),expected)
+
+class TestFenToPieces(unittest.TestCase):
+    """Tests the fen_to_pieces function"""
+    def test_valid_fen(self) -> None:
+        """Tests random fen_to_piece with valid fen"""
+        test_fen = '7q/2P1b3/6n1/1Q3B2/2N3k1/p3K3/8/6Rr w - - 0 1'
+        expected_list = [
+                            m.GamePiece('H8',m.Piece.QUEEN,m.Color.BLACK),
+                            m.GamePiece('C7',m.Piece.PAWN,m.Color.WHITE),
+                            m.GamePiece('E7',m.Piece.BISHOP,m.Color.BLACK),
+                            m.GamePiece('G6',m.Piece.KNIGHT,m.Color.BLACK),
+                            m.GamePiece('B5',m.Piece.QUEEN,m.Color.WHITE),
+                            m.GamePiece('F5',m.Piece.BISHOP,m.Color.WHITE),
+                            m.GamePiece('C4',m.Piece.KNIGHT,m.Color.WHITE),
+                            m.GamePiece('G4',m.Piece.KING,m.Color.BLACK),
+                            m.GamePiece('A3',m.Piece.PAWN,m.Color.BLACK),
+                            m.GamePiece('E3',m.Piece.KING,m.Color.WHITE),
+                            m.GamePiece('G1',m.Piece.ROOK,m.Color.WHITE),
+                            m.GamePiece('H1',m.Piece.ROOK,m.Color.BLACK)
+                        ]
+        output_list = m.fen_to_pieces(test_fen)
+        self.assertListEqual(expected_list,output_list)
+        #TODO: above comaprison only works if list is in same order. re-write to accomodate different order
 
 if __name__ == '__main__':
     unittest.main()

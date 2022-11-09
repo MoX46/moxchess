@@ -1,6 +1,9 @@
 """Main function of moxchess"""
+from cmath import pi
 from enum import Enum
+from operator import truediv
 import re
+from typing_extensions import Self
 import numpy as np
 
 DEBUG = True
@@ -63,6 +66,13 @@ class GamePiece():
         if self.color == Color.NONE:
             return ''
 
+    def __eq__(self, other:Self) -> bool:
+        if (self.position == other.position and
+            self.type == other.type and
+            self.color == other.color):
+            return True
+        return False
+
     def move(self, position:str) -> None:
         """Moves the piece to new position"""
         self.position = position
@@ -104,40 +114,38 @@ class Board():
 
 def fen_to_pieces(fen:str) -> list:
     """Converts a FEN string with a list of piece objects which can be added to the board object"""
-    current_pieces = []
+    piece_list = []
     fen_entry_to_piece = {
-        'r':(PieceTypes.ROOK,Colors.BLACK),
-        'n':(PieceTypes.KNIGHT,Colors.BLACK),
-        'b':(PieceTypes.BISHOP,Colors.BLACK),
-        'q':(PieceTypes.QUEEN,Colors.BLACK),
-        'k':(PieceTypes.KING,Colors.BLACK),
-        'p':(PieceTypes.PAWN,Colors.BLACK),
-        'R':(PieceTypes.ROOK,Colors.WHITE),
-        'N':(PieceTypes.KNIGHT,Colors.WHITE),
-        'B':(PieceTypes.BISHOP,Colors.WHITE),
-        'Q':(PieceTypes.QUEEN,Colors.WHITE),
-        'K':(PieceTypes.KING,Colors.WHITE),
-        'P':(PieceTypes.PAWN,Colors.WHITE),
+        'r':(Piece.ROOK,Color.BLACK),
+        'n':(Piece.KNIGHT,Color.BLACK),
+        'b':(Piece.BISHOP,Color.BLACK),
+        'q':(Piece.QUEEN,Color.BLACK),
+        'k':(Piece.KING,Color.BLACK),
+        'p':(Piece.PAWN,Color.BLACK),
+        'R':(Piece.ROOK,Color.WHITE),
+        'N':(Piece.KNIGHT,Color.WHITE),
+        'B':(Piece.BISHOP,Color.WHITE),
+        'Q':(Piece.QUEEN,Color.WHITE),
+        'K':(Piece.KING,Color.WHITE),
+        'P':(Piece.PAWN,Color.WHITE),
     }
-    rank_id = 7
-    file_id = 0
-
-    for i in fen:
-        if i == ' ':
-            break
-        if i == '/':
-            rank_id = (rank_id - 1) % 7 
+    row = 0
+    col = 0
+    for c in fen:
+        if c == ' ':
+            return piece_list
+        if c == '/':
+            row = row + 1 # skip to next row
             continue
-        if re.search('[0-9]',i):
-            file_id = (file_id + int(i)) % 8 
+        if re.search('[0-9]',c):
+            col = (col + int(c)) % 8 # skip columns when a number is present, loop back to 0 after 7
             continue
-        file_id = (file_id + 1) % 8
-        piece_type, color = fen_entry_to_piece[i]
-        current_pieces.append(Piece(piece_type, color))
-    for piece in current_pieces:
-        print(piece.type, piece.color)
 
-    return current_pieces
+        piece, color = fen_entry_to_piece[c]
+        pos = grid_to_rank_file((row,col))
+        piece_list.append(GamePiece(pos,piece,color))
+        col = (col + 1) % 8 # skip columns, loop back to 0 after 7
+
 
 class Game():
     """The Game class holds the board, the pieces, and all the game states"""
