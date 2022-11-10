@@ -79,18 +79,15 @@ class GamePiece():
         """Returns a string which identifies the piece (ex. I'm a white rook)"""
         return f'I\'m a {self.color.value} {self.type.value}'
 
+    @property
+    def index(self) -> tuple[int,int]:
+        """Returns the index of the piece"""
+        return rank_file_to_grid(self.position)
+
     def move(self, position:str) -> None:
         """Moves the piece to new position"""
         self.position = position
         self.first_move = False
-
-    def get_position(self) -> str:
-        """Returns the position of the piece"""
-        return self.position
-
-    def get_index(self) -> tuple[int,int]:
-        """Returns the index of the piece"""
-        return rank_file_to_grid(self.position)
 
     def get_legal_moves(self) -> list[str]:
         """Returns a list of all legal moves"""

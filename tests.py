@@ -44,13 +44,9 @@ class TestGamePiece(unittest.TestCase):
     def setUp(self) -> None:
         self.test_piece = m.GamePiece('A4',m.Piece.BISHOP,m.Color.WHITE)
 
-    def test_get_position(self) -> None:
-        """Tests the get position method"""
-        self.assertEqual(self.test_piece.get_position(), 'A4')
-
     def test_get_index(self) -> None:
         """Tests the get index method"""
-        self.assertEqual(self.test_piece.get_index(),(4,0))
+        self.assertEqual(self.test_piece.index,(4,0))
 
     # def get_legal_moves_bishop(self) -> None:
     #     """Tests legal moves for bishop"""
