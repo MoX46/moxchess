@@ -79,8 +79,7 @@ class TestFenToPieces(unittest.TestCase):
                             m.GamePiece('H1',m.Piece.ROOK,m.Color.BLACK)
                         ]
         output_list = m.fen_to_pieces(test_fen)
-        self.assertListEqual(expected_list,output_list)
-        #TODO: above comaprison only works if list is in same order. re-write to accomodate different order
+        self.assertCountEqual(expected_list,output_list)
 
 if __name__ == '__main__':
     unittest.main()

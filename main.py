@@ -1,10 +1,7 @@
 """Main function of moxchess"""
-from cmath import pi
 from enum import Enum
-from operator import truediv
 import re
 from typing_extensions import Self
-import numpy as np
 
 DEBUG = True
 STARTING_FEN_STRING = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1'
@@ -55,6 +52,7 @@ class GamePiece():
         self.type = piece_type
         self.color = color
         self.first_move = True
+        self._hash = None
 
     def __str__(self):
         if DEBUG:
@@ -68,10 +66,18 @@ class GamePiece():
 
     def __eq__(self, other:Self) -> bool:
         if (self.position == other.position and
-            self.type == other.type and
+            self.type == other.type and 
             self.color == other.color):
             return True
         return False
+
+    def __hash__(self) -> int:
+        return hash(self.identity)
+
+    @property
+    def identity(self) -> str:
+        """Returns a string which identifies the piece (ex. I'm a white rook)"""
+        return f'I\'m a {self.color.value} {self.type.value}'
 
     def move(self, position:str) -> None:
         """Moves the piece to new position"""
