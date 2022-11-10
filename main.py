@@ -43,7 +43,25 @@ def rank_file_to_grid(square:str) -> tuple[int,int]:
 
 def grid_to_rank_file(grid:tuple[int,int]) -> str:
     """ Converts (row,col) tuple to a chess square name (ex. (4,3) => D4) """
-    return FILES[grid[1]] + str(8 - int(grid[0])) 
+    return FILES[grid[1]] + str(8 - int(grid[0]))
+
+def is_fen_valid(fen:str) -> bool:
+    """Tests if fen string is valid. Returns True if valid False if invalid"""
+    regex_string = '^((?:(?:[rnbqkpRNBQKP1-8]+\/){7})[rnbqkpRNBQKP1-8]+)\s([b|w])\s(-|[K|Q|k|q]{1,4})\s(-|[a-h][1-8])\s(\d+\s\d+)$'
+    fen_parts = re.match(regex_string, fen)
+    if not fen_parts:
+        return False
+    position = fen_parts[1].split('/')
+    for rank in position:
+        square_counter = 0
+        for square in rank:
+            if re.match('[0-8]',square):
+                square_counter += int(square)
+            else:
+                square_counter += 1
+        if square_counter != 8:
+            return False
+    return True
 
 class GamePiece():
     """The Piece class represents a chess piece in the game"""
