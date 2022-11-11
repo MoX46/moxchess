@@ -103,7 +103,7 @@ class TestIsFenValid(unittest.TestCase):
             'Q6K/Pp6/2k1P3/P1b3p1/6np/P5pB/7p/n7 w - z0  0 1',
             'nRB2n1r/8/pQ5p/2K3P1/3Q1P2/2P5/3r3B/4k3 w - - - 1',
             '1r6/R2p3P/4b1BN/3p1PP1/5bp1/K3k3/1p6/2q5 w - - 0 -',
-
+            '1rBN4/PNK5/Pp2pn2/111p1P2/5R2/2n5/1k6/8 w - - 0 1',
         ]
         for fen in fen_strings:
             if m.is_fen_valid(fen):

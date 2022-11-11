@@ -53,9 +53,11 @@ def is_fen_valid(fen:str) -> bool:
         return False
     position = fen_parts[1].split('/')
     for rank in position:
+        if re.match('[1-8]{2,}',rank):
+            return False
         square_counter = 0
         for square in rank:
-            if re.match('[0-8]',square):
+            if re.match('[1-8]',square):
                 square_counter += int(square)
             else:
                 square_counter += 1
