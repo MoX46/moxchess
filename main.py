@@ -135,7 +135,7 @@ class Board():
                 print(board[i][j])
                 
 
-def fen_to_pieces(fen:str) -> list:
+def fen_to_pieces(fen:str) -> list[GamePiece]:
     """Converts a FEN string with a list of piece objects which can be added to the board object"""
     piece_list = []
     fen_entry_to_piece = {
@@ -156,18 +156,19 @@ def fen_to_pieces(fen:str) -> list:
     col = 0
     for c in fen:
         if c == ' ':
-            return piece_list
+            break
         if c == '/':
             row = row + 1 # skip to next row
             continue
         if re.search('[0-9]',c):
             col = (col + int(c)) % 8 # skip columns when a number is present, loop back to 0 after 7
             continue
-
         piece, color = fen_entry_to_piece[c]
         pos = grid_to_rank_file((row,col))
         piece_list.append(GamePiece(pos,piece,color))
         col = (col + 1) % 8 # skip columns, loop back to 0 after 7
+
+    return piece_list
 
 
 class Game():
