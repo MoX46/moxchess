@@ -24,6 +24,9 @@ class TestGamePiece(unittest.TestCase):
     def setUp(self) -> None:
         self.test_piece = m.GamePiece((4,0),m.Piece.BISHOP,m.Color.WHITE)
 
+    def test_identity(self) -> None:
+        """Tests piece identity method"""
+        self.assertTrue(self.test_piece.identity,'I\'m a white bishop on A4')
 
     # def get_legal_moves_bishop(self) -> None:
     #     """Tests legal moves for bishop"""

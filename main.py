@@ -75,17 +75,9 @@ class GamePiece():
         self._hash = None
 
     def __str__(self) -> str:
-        if DEBUG:
-            return f'I\'m a {self.color.value} {self.type.value}'
-        if self.color == Color.WHITE:
-            return UNICODE_PIECES[self.type][0]
-        if self.color == Color.BLACK:
-            return UNICODE_PIECES[self.type][1]
-        if self.color == Color.NONE:
-            return ''
+        return self.identity
 
     def __eq__(self, other:Self) -> bool:
-
         if (self.position == other.position and
             self.type == other.type and 
             self.color == other.color):
@@ -98,7 +90,7 @@ class GamePiece():
     @property
     def identity(self) -> str:
         """Returns a string which identifies the piece (ex. I'm a white rook)"""
-        return f'I\'m a {self.color.value} {self.type.value}'
+        return f'I\'m a {self.color.value} {self.type.value} on {position_to_square(self.position)}'
 
     def move(self, position:Position) -> None:
         """Moves the piece to new position"""
