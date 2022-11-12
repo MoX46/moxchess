@@ -33,15 +33,14 @@ UNICODE_PIECES = {
     Piece.PAWN: ('♙','♟︎')
 }
 
+Position = tuple[int,int]
+Square = str
+
 #columns = files (ABCDEFGH) , rows = ranks (123456789)
 # A8 = 00, B8 = 01, C8 = 02...
 # A7 = 10, B7 = 11, C7 = 12...
 
-def rank_file_to_grid(square:str) -> tuple[int,int]:
-    """ Converts a chess square name to a (row,col) tuple (ex. A8 => (0,0)) """
-    return(abs(int(square[1]) - 8), FILES.index(square[0]))
-
-def grid_to_rank_file(grid:tuple[int,int]) -> str:
+def position_to_square(grid:Position) -> Square:
     """ Converts (row,col) tuple to a chess square name (ex. (4,3) => D4) """
     return FILES[grid[1]] + str(8 - int(grid[0]))
 
@@ -65,16 +64,17 @@ def is_fen_valid(fen:str) -> bool:
             return False
     return True
 
+
 class GamePiece():
     """The Piece class represents a chess piece in the game"""
-    def __init__(self, position:str, piece_type:Piece = Piece.EMPTY, color:Color = Color.NONE):
+    def __init__(self, position:Position, piece_type:Piece = Piece.EMPTY, color:Color = Color.NONE):
         self.position = position
         self.type = piece_type
         self.color = color
         self.first_move = True
         self._hash = None
 
-    def __str__(self):
+    def __str__(self) -> str:
         if DEBUG:
             return f'I\'m a {self.color.value} {self.type.value}'
         if self.color == Color.WHITE:
@@ -85,6 +85,7 @@ class GamePiece():
             return ''
 
     def __eq__(self, other:Self) -> bool:
+
         if (self.position == other.position and
             self.type == other.type and 
             self.color == other.color):
@@ -99,12 +100,7 @@ class GamePiece():
         """Returns a string which identifies the piece (ex. I'm a white rook)"""
         return f'I\'m a {self.color.value} {self.type.value}'
 
-    @property
-    def index(self) -> tuple[int,int]:
-        """Returns the index of the piece"""
-        return rank_file_to_grid(self.position)
-
-    def move(self, position:str) -> None:
+    def move(self, position:Position) -> None:
         """Moves the piece to new position"""
         self.position = position
         self.first_move = False
@@ -112,28 +108,6 @@ class GamePiece():
     def get_legal_moves(self) -> list[str]:
         """Returns a list of all legal moves"""
         return []
-
-class Board():
-    """The Board class represents a chess board"""
-    def __init__(self,size = 8):
-        self.board = []
-        self.size = size
-        for i in range(size):
-            for j in range(size):
-                square = str(FILES[i])+str(RANKS[j])
-                self.place_piece(Piece(),square)
-    
-    def place_piece(self,piece:Piece,square:str):
-        """"Places a piece on the board"""
-        row, col = square_to_index(square)
-        self.board[row][col] = piece
-
-    def __str__(self):
-        board_string = ''
-        for i in range(self.size):
-            for j in range(self.size):
-                print(board[i][j])
-                
 
 def fen_to_pieces(fen:str) -> list[GamePiece]:
     """Converts a FEN string with a list of piece objects which can be added to the board object"""
@@ -164,28 +138,6 @@ def fen_to_pieces(fen:str) -> list[GamePiece]:
             col = (col + int(c)) % 8 # skip columns when a number is present, loop back to 0 after 7
             continue
         piece, color = fen_entry_to_piece[c]
-        pos = grid_to_rank_file((row,col))
-        piece_list.append(GamePiece(pos,piece,color))
+        piece_list.append(GamePiece((row,col),piece,color))
         col = (col + 1) % 8 # skip columns, loop back to 0 after 7
-
     return piece_list
-
-
-class Game():
-    """The Game class holds the board, the pieces, and all the game states"""
-    def __init__(self,processor = fen_to_pieces, data = STARTING_FEN_STRING):
-        self.board = Board()
-        self.pieces = processor(data)
-        for piece in self.pieces:
-            self.board.place_piece(piece,square)
-        self.move = 0
-
-def fen_to_game(fen:str):
-    """Returns a board game object which includes a Board and all the Pieces from a fen string"""
-    print('hello')
-
-def main():
-    print('Welcome to MoxChess!')
-
-if __name__ == "__main__":
-    main()
