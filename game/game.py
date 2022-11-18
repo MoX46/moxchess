@@ -1,5 +1,6 @@
 import re
 from game.gamepiece import GamePiece, Piece, Color
+from enum import Enum
 
 def fen_to_pieces(fen:str) -> list[GamePiece]:
     """Converts a FEN string with a list of piece objects which can be added to the board object"""
@@ -45,6 +46,25 @@ def is_fen_valid(fen:str) -> bool:
             return False
     return True
 
-class Position():
-    def __init__(self):
-        raise NotImplementedError
+class CastlingDirection(Enum):
+    KING_SIDE = 0
+    QUEEN_SIDE = 1
+
+class Game():
+    def __init__(self, fen:str = ''):
+        if type(fen) != str:
+            raise TypeError('FEN should be a string')
+        if not is_fen_valid(fen):
+            raise ValueError('Invalid FEN')
+        self._pieces = fen_to_pieces(fen)
+        self._turn = Color.WHITE
+        self._castling_abilty = {}
+
+    def pieces(self) -> list[GamePiece]:
+        return self._pieces
+
+    def turn(self) -> Color:
+        return self._turn
+    
+
+    

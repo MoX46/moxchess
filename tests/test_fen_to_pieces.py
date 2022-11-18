@@ -1,6 +1,6 @@
 import unittest
 from game.gamepiece import GamePiece, Piece, Color
-from game.position import fen_to_pieces
+from game.game import fen_to_pieces
 
 class TestFenToPieces(unittest.TestCase):
     """Tests the fen_to_pieces function"""

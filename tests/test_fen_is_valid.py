@@ -1,5 +1,5 @@
 import unittest
-from game.position import is_fen_valid
+from game.game import is_fen_valid
 
 class TestIsFenValid(unittest.TestCase):
     """Tests is_fen_valid function"""
