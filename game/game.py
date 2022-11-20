@@ -1,5 +1,5 @@
 import re
-from game.gamepiece import GamePiece, Piece, Color
+from game.gamepiece import GamePiece, Piece, Color, Square
 from enum import Enum
 
 def fen_to_pieces(fen:str) -> list[GamePiece]:
@@ -11,19 +11,19 @@ def fen_to_pieces(fen:str) -> list[GamePiece]:
         'R':(Piece.ROOK,Color.WHITE), 'N':(Piece.KNIGHT,Color.WHITE), 'B':(Piece.BISHOP,Color.WHITE),
         'Q':(Piece.QUEEN,Color.WHITE), 'K':(Piece.KING,Color.WHITE), 'P':(Piece.PAWN,Color.WHITE),
     }
-    row, col = 0, 0
+
+    counter = 0
     for c in fen:
         if c == ' ':
             break
         if c == '/':
-            row = row + 1 # skip to next row
             continue
         if re.search('[0-9]',c):
-            col = (col + int(c)) % 8 # skip columns when a number is present, loop back to 0 after 7
+            counter = counter + int(c)# skip columns when a number is present, loop back to 0 after 7
             continue
+        counter = counter + 1
         piece, color = fen_entry_to_piece[c]
-        piece_list.append(GamePiece((row,col),piece,color))
-        col = (col + 1) % 8 # skip columns, loop back to 0 after 7
+        piece_list.append(GamePiece(Square(counter),piece,color))
     return piece_list
 
 def is_fen_valid(fen:str) -> bool:

@@ -1,10 +1,10 @@
 import unittest
-from game.gamepiece import GamePiece, Piece, Color
+from game.gamepiece import GamePiece, Piece, Color, Square
 
 class TestGamePiece(unittest.TestCase):
     """Tests the game piece class """
     def setUp(self) -> None:
-        self.test_piece = GamePiece((4,0),Piece.BISHOP,Color.WHITE)
+        self.test_piece = GamePiece(Square.A4,Piece.BISHOP,Color.WHITE)
 
     def test_identity(self) -> None:
         """Tests piece identity method"""
