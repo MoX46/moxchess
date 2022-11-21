@@ -5,8 +5,8 @@ from game.gamepiece import GamePiece, Piece, Color, Square
 class TestGamePiece(unittest.TestCase):
     """Tests the game piece class """
     def setUp(self) -> None:
-        self.game1 = Game('7q/2P1b3/6n1/1Q3B2/2N3k1/p3K3/8/6Rr w K e3 0 1')
-        self.game2 = Game('2n2b2/r1pK4/P2P1P2/q7/4pNB1/1bk5/5p2/7N b Qq c6 0 1')
+        self.game1 = Game('7q/2P1b3/6n1/1Q3B2/2N3k1/p3K3/8/6Rr w K e3 12 1')
+        self.game2 = Game('2n2b2/r1pK4/P2P1P2/q7/4pNB1/1bk5/5p2/7N b Qq c6 0 57')
 
     def test_pieces(self) -> None:
         """Tests piece identity method"""
@@ -37,11 +37,20 @@ class TestGamePiece(unittest.TestCase):
         self.assertIn(Square.A1, self.game2.castling_abilty[Color.WHITE])
         self.assertIn(Square.A8, self.game2.castling_abilty[Color.BLACK])
 
-
     def test_ep_square(self) -> None:
         """Test if game returns correct en passant squarer"""
         self.assertEqual(Square.E3,self.game1.ep_square)
         self.assertEqual(Square.C6,self.game2.ep_square)
+
+    def test_halfmove_clock(self) -> None:
+        """Tests if game returns correct half move clock"""
+        self.assertEqual(12,self.game1.halfmove_clock)
+        self.assertEqual(0,self.game2.halfmove_clock)
+
+    def test_fullmove_clock(self) -> None:
+        """Tests if game returns correct half move clock"""
+        self.assertEqual(1,self.game1.fullmove_clock)
+        self.assertEqual(57,self.game2.fullmove_clock)
 
 
 if __name__ == '__main__':

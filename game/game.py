@@ -14,6 +14,8 @@ def fen_to_game_info(fen:str) -> dict:
             Color.BLACK:[]
         },
         'ep_square':Square.NONE,
+        'halfmove_clock':int(),
+        'fullmove_clock':int()
     }
     fen_array = fen.split(' ')
     side_to_move = fen_array[1]
@@ -37,6 +39,9 @@ def fen_to_game_info(fen:str) -> dict:
         return_value['castling_ability'][Color.BLACK].append(Square.A8)
 
     return_value['ep_square'] = chess_notation_to_square(ep_square.upper())
+
+    return_value['halfmove_clock'] = int(halfmove_clock)
+    return_value['fullmove_clock'] = int(fullmove_clock)
 
     return return_value
 
@@ -97,8 +102,8 @@ class Game():
         self.turn = fen_to_game_info(fen)['side_to_move']
         self.castling_abilty = fen_to_game_info(fen)['castling_ability']
         self.ep_square = fen_to_game_info(fen)['ep_square']
-        #self.halfmove_clock = fen_to_game_info(fen)['halfmove_clock']
-        #self.fullmove_clock = fen_to_game_info(fen)['fullmove_clock']
+        self.halfmove_clock = fen_to_game_info(fen)['halfmove_clock']
+        self.fullmove_clock = fen_to_game_info(fen)['fullmove_clock']
 
 
 
