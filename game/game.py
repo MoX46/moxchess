@@ -1,6 +1,10 @@
 import re
-from enum import Enum
 from game.gamepiece import GamePiece, Piece, Color, Square
+
+def chess_notation_to_square(cn_square:str) -> int:
+    for s in Square:
+        if s.name == cn_square:
+            return s
 
 def fen_to_game_info(fen:str) -> dict:
     return_value = {
@@ -27,6 +31,8 @@ def fen_to_game_info(fen:str) -> dict:
         return_value['castling_ability'][Color.BLACK] = 8
     if 'q' in castling_ability:
         return_value['castling_ability'][Color.BLACK] = 1
+
+    return_value['ep_square'] = chess_notation_to_square(ep_square.upper())
 
     return return_value
 
@@ -86,6 +92,7 @@ class Game():
         self._pieces = None
         self._turn = fen_to_game_info(fen)['side_to_move']
         self._castling_abilty = {}
+        self._ep_square = fen_to_game_info(fen)['ep_square']
 
     @property
     def pieces(self) -> list[GamePiece]:
@@ -96,6 +103,10 @@ class Game():
     @property
     def turn(self) -> Color:
         return self._turn
+
+    @property
+    def ep_square(self) -> Square:
+        return self._ep_square
     
 
     
