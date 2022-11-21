@@ -9,7 +9,11 @@ def chess_notation_to_square(cn_square:str) -> int:
 def fen_to_game_info(fen:str) -> dict:
     return_value = {
         'side_to_move':Color.NONE,
-        'castling_ability':{}
+        'castling_ability':{
+            Color.WHITE:[],
+            Color.BLACK:[]
+        },
+        'ep_square':Square.NONE,
     }
     fen_array = fen.split(' ')
     side_to_move = fen_array[1]
@@ -24,13 +28,13 @@ def fen_to_game_info(fen:str) -> dict:
         return_value['side_to_move'] = Color.BLACK
 
     if 'K' in castling_ability:
-        return_value['castling_ability'][Color.WHITE] = 64
-    if 'K' in castling_ability:
-        return_value['castling_ability'][Color.WHITE] = 56
+        return_value['castling_ability'][Color.WHITE].append(Square.H1)
+    if 'Q' in castling_ability:
+        return_value['castling_ability'][Color.WHITE].append(Square.A1)
     if 'k' in castling_ability:
-        return_value['castling_ability'][Color.BLACK] = 8
+        return_value['castling_ability'][Color.BLACK].append(Square.H8)
     if 'q' in castling_ability:
-        return_value['castling_ability'][Color.BLACK] = 1
+        return_value['castling_ability'][Color.BLACK].append(Square.A8)
 
     return_value['ep_square'] = chess_notation_to_square(ep_square.upper())
 
@@ -89,24 +93,15 @@ class Game():
         if not is_fen_valid(fen):
             raise ValueError('Invalid FEN')
         self.fen = fen
-        self._pieces = None
-        self._turn = fen_to_game_info(fen)['side_to_move']
-        self._castling_abilty = {}
-        self._ep_square = fen_to_game_info(fen)['ep_square']
+        self.pieces = fen_to_pieces(self.fen)
+        self.turn = fen_to_game_info(fen)['side_to_move']
+        self.castling_abilty = fen_to_game_info(fen)['castling_ability']
+        self.ep_square = fen_to_game_info(fen)['ep_square']
+        #self.halfmove_clock = fen_to_game_info(fen)['halfmove_clock']
+        #self.fullmove_clock = fen_to_game_info(fen)['fullmove_clock']
 
-    @property
-    def pieces(self) -> list[GamePiece]:
-        if self._pieces is None:
-            self._pieces = fen_to_pieces(self.fen)
-        return self._pieces
 
-    @property
-    def turn(self) -> Color:
-        return self._turn
 
-    @property
-    def ep_square(self) -> Square:
-        return self._ep_square
     
 
     

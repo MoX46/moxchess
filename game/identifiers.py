@@ -81,4 +81,5 @@ class Square(Enum):
     F1 = 62
     G1 = 63
     H1 = 64
+    NONE = None
 
