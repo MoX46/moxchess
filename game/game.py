@@ -91,6 +91,27 @@ def is_fen_valid(fen:str) -> bool:
             return False
     return True
 
+def up_squares_visible_to(piece:GamePiece) -> list[Square]:
+    visible_squares = []
+    if piece.type == Piece.PAWN:
+        if piece.color == Color.WHITE and piece.square.value in [49,50,51,52,53,54,55,56]:
+            visible_squares.append(Square(piece.square.value - 16))
+        if piece.square.value - 8 > 0:
+            visible_squares.append(Square(piece.square.value - 8))
+
+    if piece.type == Piece.ROOK or piece.type == Piece.QUEEN:
+        next_square = piece.square.value
+        while next_square - 8 > 0:
+            next_square = piece.square.value - 8
+            visible_squares.append(Square(next_square))
+    
+    return visible_squares
+
+def squares_visible_to(piece:GamePiece) -> list[Square]:
+    visible_squares = []
+    visible_squares += up_squares_visible_to(piece)
+    return visible_squares
+
 class Game():
     def __init__(self, fen:str = ''):
         if not isinstance(fen, str):
@@ -104,7 +125,7 @@ class Game():
         self.ep_square = fen_to_game_info(fen)['ep_square']
         self.halfmove_clock = fen_to_game_info(fen)['halfmove_clock']
         self.fullmove_clock = fen_to_game_info(fen)['fullmove_clock']
-
+        self._legal_moves = []
 
 
     

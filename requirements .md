@@ -14,7 +14,7 @@ Returns a new game position using fen string. Returns a starting postion if no f
 *fen (Optional)*: a fen string for a position. If not string is provided, the new game fen string is used
 **Return**
 A Game object
-
+Status: Done
 ---
 
 ```python
@@ -26,7 +26,7 @@ Returns a game based on input PGN string
 *pgn*: a PGN string representing a game
 **Return**
 A Game object
-
+Status: Outstanding
 ---
 
 ```python
@@ -38,7 +38,7 @@ Used to move piece in the game
 *move*: a string representing the move to be played, ex: Qxe4
 **Return**
 None
-
+Status: Outstanding
 ---
 
 ```python
@@ -53,7 +53,7 @@ Used to make a move by specifiying a GamePiece object and a square to move to. O
 *take (Optional)*: A GamePice to take
 **Return**
 None
-
+Status: Outstanding
 ---
 
 ```python
@@ -65,7 +65,7 @@ Used to change game state to previous move
 None
 **Return**
 None
-
+Status: Outstanding
 ---
 
 ```python
@@ -77,7 +77,7 @@ Used to return a list of valid moves for the entire board, or for a specific pie
 *piece (Optional)*: GamePice for which to return valid moves
 **Return**
 A list of all valid moves in the position if no piece is specified.
-
+Status: Outstanding
 ---
 
 ```python
@@ -90,11 +90,11 @@ Used to return all the pieces in the game, pieces of a certain type, or of a cer
 *color (Optionl)*: Specify Colors object to return only of that color
 **Returns**
 A list of GamePiece objects
-
+Status: Done
 ---
 
 ```python
-Game.turn() -> Colors
+Game.turn() -> Color
 ```
 Returns which color is to move next
 
@@ -102,29 +102,29 @@ Returns which color is to move next
 None
 **Returns**
 Colors object
-
+Status: Done
 ---
 
 ```python
-Game.castling_rights() -> dict[GamePice, CastlingDirection]
+Game.castling_rights() -> dict[GamePice,list[CastlingDirection]]
 ```
 Returns castling moves available
 
 **Arguments**
 None
 **Returns**
-
+Status: Done
 ---
 
 ```python
-Game.ep() ->
+Game.ep_square() -> Square
 ```
 Returns en passant avaiabiilty
 
 **Arguments**
 
 **Returns**
-
+Status: Done
 ---
 
 ```python
@@ -136,7 +136,7 @@ Returns the halfmove clock which represents number of moves since last capture o
 None
 **Returns**
 integer
-
+Status: Done
 ---
 
 ```python
@@ -149,7 +149,7 @@ None
 
 **Returns**
 int
-
+Status: Done
 ---
 
 ```python
@@ -162,7 +162,7 @@ None
 
 **Returns**
 String
-
+Status: Outstanding
 ---
 
 ```python
