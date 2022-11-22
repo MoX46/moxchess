@@ -1,4 +1,5 @@
 import re
+from math import ceil
 from game.gamepiece import GamePiece, Piece, Color, Square
 
 def chess_notation_to_square(cn_square:str) -> int:
@@ -91,25 +92,53 @@ def is_fen_valid(fen:str) -> bool:
             return False
     return True
 
-def up_squares_visible_to(piece:GamePiece) -> list[Square]:
+def vertical_squares_visible_to(piece:GamePiece) -> list[Square]:
     visible_squares = []
     if piece.type == Piece.PAWN:
-        if piece.color == Color.WHITE and piece.square.value in [49,50,51,52,53,54,55,56]:
-            visible_squares.append(Square(piece.square.value - 16))
-        if piece.square.value - 8 > 0:
-            visible_squares.append(Square(piece.square.value - 8))
+        initial_squares = []
+        increment = 0
+        if piece.color == Color.WHITE:
+            initial_squares = [49,50,51,52,53,54,55,56]
+            increment = -8
+        if piece.color == Color.BLACK:
+            initial_squares = [9,10,11,12,13,14,15,16]
+            increment = 8
+        if  piece.square.value in initial_squares:
+            visible_squares.append(Square(piece.square.value + 2 * increment))
+        if (piece.square.value + increment) > 0 and (piece.square.value + increment) <= 64:
+            visible_squares.append(Square(piece.square.value + increment))
 
     if piece.type == Piece.ROOK or piece.type == Piece.QUEEN:
-        next_square = piece.square.value
-        while next_square - 8 > 0:
-            next_square = piece.square.value - 8
+        increment = 8
+        next_square = piece.square.value - increment
+        while next_square > 0:
             visible_squares.append(Square(next_square))
+            next_square -= increment
+        next_square = piece.square.value + increment
+        while next_square <= 64:
+            visible_squares.append(Square(next_square))
+            next_square += increment
+
+    return visible_squares
+
+def horizontal_squares_visible_to(piece:GamePiece) -> list[Square]:
+    visible_squares = []
+    increment = 1
+    if piece.type == Piece.ROOK or piece.type == Piece.QUEEN:
+        next_square = piece.square.value - increment
+        while next_square > (8 * (ceil(piece.square.value/8) - 1)):
+            visible_squares.append(Square(next_square))
+            next_square -= increment
+        next_square = piece.square.value + increment
+        while next_square <= (8 * ceil(piece.square.value/8)):
+            visible_squares.append(Square(next_square))
+            next_square += increment
     
     return visible_squares
 
 def squares_visible_to(piece:GamePiece) -> list[Square]:
     visible_squares = []
-    visible_squares += up_squares_visible_to(piece)
+    visible_squares += vertical_squares_visible_to(piece) + horizontal_squares_visible_to(piece)
     return visible_squares
 
 class Game():
